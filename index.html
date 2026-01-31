@@ -57,7 +57,7 @@
         /* Navigation Transitions */
         .nav-container {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            background: rgba(10, 10, 10, 0.9);
+            background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 107, 53, 0.2);
         }
@@ -186,7 +186,23 @@
         }
         
         .vehicle-card:hover .vehicle-image {
-            transform: scale(1.1) rotate(2deg);
+            transform: scale(1.1);
+        }
+        
+        .vehicle-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.9), rgba(255, 0, 0, 0.8));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            z-index: 10;
         }
         
         /* Physics Showcase */
@@ -201,16 +217,6 @@
             background: rgba(255, 107, 53, 0.1);
             transform: translateX(10px);
             border-left: 4px solid var(--primary);
-        }
-        
-        /* BeamNG Specific Animations */
-        .crush-animation {
-            animation: crush 4s ease-in-out infinite;
-        }
-        
-        @keyframes crush {
-            0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(0.8); }
         }
         
         /* Steam Button */
@@ -366,18 +372,6 @@
             }
         }
         
-        /* Video Background Placeholder */
-        .video-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.3;
-            z-index: -1;
-        }
-        
         /* Particle Effect */
         .particle {
             position: absolute;
@@ -401,6 +395,45 @@
                 transform: translateY(-100vh) scale(1);
                 opacity: 0;
             }
+        }
+        
+        /* Feature Cards */
+        .feature-icon {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(255, 107, 53, 0.05));
+            border: 1px solid rgba(255, 107, 53, 0.3);
+        }
+        
+        /* Testimonial Cards */
+        .testimonial-card {
+            background: linear-gradient(145deg, #1a1a1a, #151515);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Accordion */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .accordion-content.active {
+            max-height: 500px;
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #ff6b35, #ff9f1c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Grid Background */
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(255, 107, 53, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 107, 53, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
         }
     </style>
 </head>
@@ -433,8 +466,8 @@
                     <a href="#home" class="nav-link text-gray-300 hover:text-white font-medium transition-colors">Home</a>
                     <a href="#vehicles" class="nav-link text-gray-300 hover:text-white font-medium transition-colors">Vehicles</a>
                     <a href="#physics" class="nav-link text-gray-300 hover:text-white font-medium transition-colors">Physics</a>
+                    <a href="#features" class="nav-link text-gray-300 hover:text-white font-medium transition-colors">Features</a>
                     <a href="#mods" class="nav-link text-gray-300 hover:text-white font-medium transition-colors">Mods</a>
-                    <a href="#community" class="nav-link text-gray-300 hover:text-white font-medium transition-colors">Community</a>
                     <a href="#specs" class="nav-link text-gray-300 hover:text-white font-medium transition-colors">Specs</a>
                     
                     <a href="https://store.steampowered.com/app/284160/BeamNGdrive/" target="_blank" 
@@ -459,9 +492,9 @@
                 <a href="#home" class="text-xl font-bold text-white hover:text-orange-500 transition-colors">Home</a>
                 <a href="#vehicles" class="text-xl font-bold text-white hover:text-orange-500 transition-colors">Vehicles</a>
                 <a href="#physics" class="text-xl font-bold text-white hover:text-orange-500 transition-colors">Physics</a>
+                <a href="#features" class="text-xl font-bold text-white hover:text-orange-500 transition-colors">Features</a>
                 <a href="#mods" class="text-xl font-bold text-white hover:text-orange-500 transition-colors">Mods</a>
-                <a href="#community" class="text-xl font-bold text-white hover:text-orange-500 transition-colors">Community</a>
-                <a href="#specs" class="text-xl font-bold text-white hover:text-orange-500 transition-colors">Specs</a>
+                <a href="#specs" class="text-xl font-bold text-white hover:text-orange-500 transition-colors">System Requirements</a>
                 <hr class="border-gray-700">
                 <a href="https://store.steampowered.com/app/284160/BeamNGdrive/" target="_blank" 
                    class="steam-btn px-6 py-3 rounded-lg text-white font-bold text-center flex items-center justify-center space-x-2">
@@ -495,35 +528,36 @@
                         <span class="text-orange-400 text-sm font-semibold">v0.31 Now Available</span>
                     </div>
                     <h1 class="hero-text text-5xl md:text-7xl font-black leading-tight mb-6">
-                        Beyond<br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-600">Driving</span><br>
-                        Simulation
+                        Soft-Body<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-600">Dynamics</span><br>
+                        Redefined
                     </h1>
                     <p class="text-xl text-gray-400 mb-8 leading-relaxed max-w-lg">
-                        Experience the ultimate soft-body vehicle physics simulator. Every component is simulated in real-time, creating the most authentic destruction and driving dynamics ever created.
+                        Experience the ultimate soft-body vehicle physics simulator. Every node, beam, and component is simulated in real-time, creating the most authentic destruction and driving dynamics ever created in a video game.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
                         <a href="https://store.steampowered.com/app/284160/BeamNGdrive/" target="_blank" 
                            class="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-bold py-4 px-8 rounded-full transform hover:scale-105 transition-all shadow-lg shadow-orange-500/25 flex items-center justify-center space-x-2">
-                            <i class="fas fa-gamepad"></i>
-                            <span>Play Now</span>
+                            <i class="fab fa-steam text-xl"></i>
+                            <span>Play on Steam</span>
                         </a>
-                        <a href="#vehicles" 
+                        <a href="https://www.youtube.com/watch?v=4ms-LHkN6YQ" target="_blank"
                            class="bg-transparent border-2 border-gray-600 hover:border-orange-500 text-white font-bold py-4 px-8 rounded-full transform hover:scale-105 transition-all flex items-center justify-center space-x-2 group">
-                            <span>Explore Vehicles</span>
-                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            <i class="fas fa-play"></i>
+                            <span>Watch Trailer</span>
+                            <i class="fas fa-external-link-alt text-xs opacity-50"></i>
                         </a>
                     </div>
                     
                     <div class="mt-12 flex items-center space-x-8">
                         <div>
                             <div class="text-3xl font-bold text-white">40+</div>
-                            <div class="text-sm text-gray-500">Vehicles</div>
+                            <div class="text-sm text-gray-500">Detailed Vehicles</div>
                         </div>
                         <div class="w-px h-12 bg-gray-700"></div>
                         <div>
                             <div class="text-3xl font-bold text-white">∞</div>
-                            <div class="text-sm text-gray-500">Damage Possibilities</div>
+                            <div class="text-sm text-gray-500">Crash Scenarios</div>
                         </div>
                         <div class="w-px h-12 bg-gray-700"></div>
                         <div>
@@ -534,16 +568,19 @@
                 </div>
                 
                 <div class="relative reveal delay-200">
-                    <div class="relative z-10 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-4 border border-gray-700 shadow-2xl transform hover:rotate-1 transition-transform duration-500">
-                        <div class="aspect-video bg-gray-800 rounded-lg overflow-hidden relative">
+                    <div class="relative z-10 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-2 border border-gray-700 shadow-2xl transform hover:rotate-1 transition-transform duration-500">
+                        <div class="aspect-video bg-gray-800 rounded-xl overflow-hidden relative">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                            <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80" 
-                                 alt="BeamNG Gameplay" 
-                                 class="w-full h-full object-cover opacity-80 hover:scale-105 transition-transform duration-700">
-                            <div class="absolute bottom-4 left-4 z-20">
-                                <div class="flex items-center space-x-2 text-orange-400">
-                                    <i class="fas fa-play-circle text-2xl"></i>
-                                    <span class="font-semibold">Watch Gameplay</span>
+                            <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/284160/ss_5c748c93825d4d4f5c15b0487b1967a21f4ba4d7.1920x1080.jpg" 
+                                 alt="BeamNG.drive Gameplay" 
+                                 class="w-full h-full object-cover opacity-90 hover:scale-105 transition-transform duration-700">
+                            <div class="absolute bottom-4 left-4 z-20 flex items-center space-x-2 text-orange-400">
+                                <div class="w-12 h-12 bg-orange-500/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-orange-500/30">
+                                    <i class="fas fa-play text-orange-500"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-semibold">Official Gameplay</div>
+                                    <div class="text-xs text-gray-400">4K Ultra Settings</div>
                                 </div>
                             </div>
                         </div>
@@ -561,453 +598,662 @@
         </div>
     </section>
 
-    <!-- Vehicles Section -->
-    <section id="vehicles" class="py-24 bg-gray-900 relative">
+    <!-- Features Grid Section -->
+    <section id="features" class="py-24 bg-gray-900 grid-bg relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
                 <h2 class="text-4xl md:text-6xl font-black text-white mb-4">
-                    Vehicle <span class="text-orange-500">Collection</span>
+                    Why <span class="gradient-text">BeamNG</span>?
                 </h2>
                 <p class="text-gray-400 max-w-2xl mx-auto text-lg">
-                    Every vehicle features a fully deformable physics skeleton with realistic weight distribution, suspension behavior, and crash dynamics.
+                    A decade of development has created the most sophisticated vehicle simulation engine in gaming history.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-orange-500/50 transition-all reveal">
+                    <div class="feature-icon w-14 h-14 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-atom text-orange-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Real-Time Physics</h3>
+                    <p class="text-gray-400 text-sm">Every vehicle component is physically simulated. Body panels crumple, suspension compresses, and engines overheat based on real-world physics calculations.</p>
+                </div>
+
+                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-orange-500/50 transition-all reveal delay-100">
+                    <div class="feature-icon w-14 h-14 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-car-crash text-orange-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Authentic Damage</h3>
+                    <p class="text-gray-400 text-sm">No pre-canned crash animations. Every dent, scratch, and structural failure is calculated in real-time based on impact forces and material properties.</p>
+                </div>
+
+                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-orange-500/50 transition-all reveal delay-200">
+                    <div class="feature-icon w-14 h-14 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-map-marked-alt text-orange-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Massive Open World</h3>
+                    <p class="text-gray-400 text-sm">Drive across sprawling 16x16 km maps featuring diverse biomes, detailed road networks, and dynamic terrain deformation for off-road adventures.</p>
+                </div>
+
+                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-orange-500/50 transition-all reveal delay-300">
+                    <div class="feature-icon w-14 h-14 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-cogs text-orange-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Deep Customization</h3>
+                    <p class="text-gray-400 text-sm">Swap engines, upgrade turbos, adjust suspension geometry, and tune differentials. Every vehicle has thousands of configurative possibilities.</p>
+                </div>
+
+                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-orange-500/50 transition-all reveal">
+                    <div class="feature-icon w-14 h-14 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-users text-orange-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Multiplayer</h3>
+                    <p class="text-gray-400 text-sm">Join friends online for racing, roleplay, or chaotic crash fests. Supports up to 64 players per server with synchronized physics.</p>
+                </div>
+
+                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-orange-500/50 transition-all reveal delay-100">
+                    <div class="feature-icon w-14 h-14 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-wrench text-orange-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Modding Support</h3>
+                    <p class="text-gray-400 text-sm">Robust Lua scripting API and extensive modding tools. Create custom vehicles, maps, scenarios, and gameplay modes with full documentation.</p>
+                </div>
+
+                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-orange-500/50 transition-all reveal delay-200">
+                    <div class="feature-icon w-14 h-14 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-vr-cardboard text-orange-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">VR Ready</h3>
+                    <p class="text-gray-400 text-sm">Full Virtual Reality support with OpenXR compatibility. Experience the carnage from inside the cockpit with true 1:1 head tracking and stereoscopic 3D.</p>
+                </div>
+
+                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-orange-500/50 transition-all reveal delay-300">
+                    <div class="feature-icon w-14 h-14 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-orange-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Telemetry API</h3>
+                    <p class="text-gray-400 text-sm">Advanced telemetry output for motion rigs, steering wheels with force feedback, and external dashboard displays for hardcore sim enthusiasts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vehicles Section -->
+    <section id="vehicles" class="py-24 bg-black relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-6xl font-black text-white mb-4">
+                    Vehicle <span class="gradient-text">Collection</span>
+                </h2>
+                <p class="text-gray-400 max-w-3xl mx-auto text-lg">
+                    Every vehicle features a fully deformable physics skeleton with up to 1000 nodes and 4000 beams. Realistic weight distribution, suspension behavior, and crash dynamics unique to each chassis.
                 </p>
             </div>
 
             <!-- Filter Buttons -->
             <div class="flex flex-wrap justify-center gap-4 mb-12 reveal">
-                <button class="filter-btn active px-6 py-2 rounded-full border border-orange-500 bg-orange-500/20 text-orange-400 font-semibold transition-all hover:bg-orange-500 hover:text-white" data-filter="all">All</button>
-                <button class="filter-btn px-6 py-2 rounded-full border border-gray-700 text-gray-400 font-semibold transition-all hover:border-orange-500 hover:text-orange-400" data-filter="truck">Trucks</button>
-                <button class="filter-btn px-6 py-2 rounded-full border border-gray-700 text-gray-400 font-semibold transition-all hover:border-orange-500 hover:text-orange-400" data-filter="sedan">Sedans</button>
-                <button class="filter-btn px-6 py-2 rounded-full border border-gray-700 text-gray-400 font-semibold transition-all hover:border-orange-500 hover:text-orange-400" data-filter="sport">Sports</button>
-                <button class="filter-btn px-6 py-2 rounded-full border border-gray-700 text-gray-400 font-semibold transition-all hover:border-orange-500 hover:text-orange-400" data-filter="classic">Classic</button>
+                <button class="filter-btn active px-6 py-2 rounded-full border border-orange-500 bg-orange-500/20 text-orange-400 font-semibold transition-all hover:bg-orange-500 hover:text-white" data-filter="all">All Vehicles</button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-700 text-gray-400 font-semibold transition-all hover:border-orange-500 hover:text-orange-400" data-filter="truck">Trucks & SUVs</button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-700 text-gray-400 font-semibold transition-all hover:border-orange-500 hover:text-orange-400" data-filter="sedan">Sedans & Wagons</button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-700 text-gray-400 font-semibold transition-all hover:border-orange-500 hover:text-orange-400" data-filter="sport">Sports & Supercars</button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-700 text-gray-400 font-semibold transition-all hover:border-orange-500 hover:text-orange-400" data-filter="classic">Classic & Muscle</button>
             </div>
 
             <!-- Vehicle Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="vehicleGrid">
 
                 <!-- Gavril D-Series -->
-                <div class="vehicle-card rounded-2xl p-6 reveal" data-category="truck">
-                    <div class="relative overflow-hidden rounded-xl mb-4 h-64 bg-gray-800">
-                        <img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80" 
-                             alt="Gavril D-Series" 
+                <div class="vehicle-card rounded-2xl overflow-hidden reveal" data-category="truck">
+                    <div class="relative h-64 bg-gray-800 overflow-hidden">
+                        <img src="https://i.gyazo.com/7a8d6f0258408a7ad84a4dd85b9aaa97.jpg" 
+                             alt="Gavril D-Series - American Full-Size Pickup Truck" 
                              class="vehicle-image w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">TRUCK</div>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Gavril D-Series</h3>
-                    <p class="text-gray-400 mb-4 text-sm leading-relaxed">
-                        An American full-size pickup truck available in multiple configurations. Features a body-on-frame design, V8 engine options, and authentic 4WD capabilities. Perfect for off-roading and utility work.
-                    </p>
-                    <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Engine</span>
-                            <p class="text-white font-semibold">4.5L V8 / 6.0L V8</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Drivetrain</span>
-                            <p class="text-white font-semibold">RWD / 4WD</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Weight</span>
-                            <p class="text-white font-semibold">2,200 kg</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Configuration</span>
-                            <p class="text-white font-semibold">15+ Variants</p>
+                        <div class="vehicle-badge">Truck</div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                            <div class="flex items-center space-x-2 text-xs text-gray-300">
+                                <i class="fas fa-weight-hanging"></i>
+                                <span>2,200 kg</span>
+                                <span class="mx-2">|</span>
+                                <i class="fas fa-engine"></i>
+                                <span>V8 6.0L</span>
+                            </div>
                         </div>
                     </div>
-                    <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
-                        <span>View Details</span>
-                        <i class="fas fa-external-link-alt group-hover:translate-x-1 transition-transform"></i>
-                    </button>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white mb-2">Gavril D-Series</h3>
+                        <p class="text-gray-400 mb-4 text-sm leading-relaxed">
+                            The quintessential American full-size pickup truck. Available in single cab, extended cab, and crew cab configurations. Features body-on-frame construction, solid rear axle, and optional four-wheel drive with low-range gearing. Perfect for heavy hauling, off-roading, and utility work across any terrain.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Engine Options</span>
+                                <p class="text-white font-semibold">4.5L V8 / 6.0L V8 OHV</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Drivetrain</span>
+                                <p class="text-white font-semibold">RWD / 4WD with Lo/Hi</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Suspension</span>
+                                <p class="text-white font-semibold">Solid Axle / Leaf Springs</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Configurations</span>
+                                <p class="text-white font-semibold">15+ Factory Specs</p>
+                            </div>
+                        </div>
+                        <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
+                            <span>View Configurations</span>
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Civetta Bolide -->
-                <div class="vehicle-card rounded-2xl p-6 reveal" data-category="sport">
-                    <div class="relative overflow-hidden rounded-xl mb-4 h-64 bg-gray-800">
-                        <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=800&q=80" 
-                             alt="Civetta Bolide" 
+                <div class="vehicle-card rounded-2xl overflow-hidden reveal" data-category="sport">
+                    <div class="relative h-64 bg-gray-800 overflow-hidden">
+                        <img src="https://www.beamng.com/attachments/868108/" 
+                             alt="Civetta Bolide - Italian Supercar" 
                              class="vehicle-image w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">SUPERCAR</div>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Civetta Bolide</h3>
-                    <p class="text-gray-400 mb-4 text-sm leading-relaxed">
-                        An Italian mid-engine supercar inspired by 80s icons. Features a space frame chassis, fiberglass body, and a screaming V8 mounted behind the driver. Capable of extreme speeds with terrifying handling characteristics.
-                    </p>
-                    <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Engine</span>
-                            <p class="text-white font-semibold">3.9L V8</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Power</span>
-                            <p class="text-white font-semibold">450-800 HP</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Weight</span>
-                            <p class="text-white font-semibold">1,350 kg</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Layout</span>
-                            <p class="text-white font-semibold">Mid-Engine RWD</p>
+                        <div class="vehicle-badge" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(185, 28, 28, 0.8));">Supercar</div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                            <div class="flex items-center space-x-2 text-xs text-gray-300">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>320 km/h</span>
+                                <span class="mx-2">|</span>
+                                <i class="fas fa-horse-head"></i>
+                                <span>800 HP</span>
+                            </div>
                         </div>
                     </div>
-                    <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
-                        <span>View Details</span>
-                        <i class="fas fa-external-link-alt group-hover:translate-x-1 transition-transform"></i>
-                    </button>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white mb-2">Civetta Bolide</h3>
+                        <p class="text-gray-400 mb-4 text-sm leading-relaxed">
+                            An iconic Italian wedge-shaped supercar from the 1980s. Mid-engine layout with a fiberglass tub and steel space frame. The 5.0L flat-plane crank V8 delivers a screeching 8000 RPM redline. Notorious for snap oversteer and requiring immense skill to control at the limit. A true widow-maker.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Engine</span>
+                                <p class="text-white font-semibold">5.0L V8 DOHC</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Power Output</span>
+                                <p class="text-white font-semibold">450 - 800 HP</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Weight</span>
+                                <p class="text-white font-semibold">1,350 kg</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Layout</span>
+                                <p class="text-white font-semibold">Mid-Engine RWD</p>
+                            </div>
+                        </div>
+                        <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
+                            <span>View Configurations</span>
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Ibishu Pessima -->
-                <div class="vehicle-card rounded-2xl p-6 reveal" data-category="sedan">
-                    <div class="relative overflow-hidden rounded-xl mb-4 h-64 bg-gray-800">
-                        <img src="https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=800&q=80" 
-                             alt="Ibishu Pessima" 
+                <div class="vehicle-card rounded-2xl overflow-hidden reveal" data-category="sedan">
+                    <div class="relative h-64 bg-gray-800 overflow-hidden">
+                        <img src="https://www.beamng.com/game/news/blog/ibishu-pessima/midsize_hu5ed98fbce00cdc893c82a7837e8a61b6_259194_1920x622_fill_q95_bgfff_box_center.jpg" 
+                             alt="Ibishu Pessima - Japanese Compact Sedan" 
                              class="vehicle-image w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">SEDAN</div>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Ibishu Pessima</h3>
-                    <p class="text-gray-400 mb-4 text-sm leading-relaxed">
-                        A compact Japanese sedan from the 90s. Front-wheel drive with modest engine options. The perfect daily driver that transforms into a capable tuner car with turbo upgrades and suspension modifications.
-                    </p>
-                    <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Engine</span>
-                            <p class="text-white font-semibold">1.8L / 2.0L I4</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Drivetrain</span>
-                            <p class="text-white font-semibold">FWD / AWD</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Weight</span>
-                            <p class="text-white font-semibold">1,280 kg</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Era</span>
-                            <p class="text-white font-semibold">1990s</p>
+                        <div class="vehicle-badge" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(37, 99, 235, 0.8));">Sedan</div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                            <div class="flex items-center space-x-2 text-xs text-gray-300">
+                                <i class="fas fa-calendar"></i>
+                                <span>1996 Model</span>
+                                <span class="mx-2">|</span>
+                                <i class="fas fa-cog"></i>
+                                <span>Manual</span>
+                            </div>
                         </div>
                     </div>
-                    <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
-                        <span>View Details</span>
-                        <i class="fas fa-external-link-alt group-hover:translate-x-1 transition-transform"></i>
-                    </button>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white mb-2">Ibishu Pessima</h3>
+                        <p class="text-gray-400 mb-4 text-sm leading-relaxed">
+                            A reliable Japanese compact sedan from the mid-90s. Front-wheel drive with a choice of economical inline-4 engines. While modest in factory form, the Pessima has become a favorite in the tuning community for swaps and track builds. Available as sedan or practical wagon variant.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Engine</span>
+                                <p class="text-white font-semibold">1.8L / 2.0L I4 DOHC</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Drivetrain</span>
+                                <p class="text-white font-semibold">FWD / AWD</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Weight</span>
+                                <p class="text-white font-semibold">1,280 kg</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Body Style</span>
+                                <p class="text-white font-semibold">Sedan / Wagon</p>
+                            </div>
+                        </div>
+                        <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
+                            <span>View Configurations</span>
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Bruckell Bastion -->
-                <div class="vehicle-card rounded-2xl p-6 reveal" data-category="classic">
-                    <div class="relative overflow-hidden rounded-xl mb-4 h-64 bg-gray-800">
-                        <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80" 
-                             alt="Bruckell Bastion" 
+                <div class="vehicle-card rounded-2xl overflow-hidden reveal" data-category="classic">
+                    <div class="relative h-64 bg-gray-800 overflow-hidden">
+                        <img src="https://static.wikia.nocookie.net/beamng/images/b/bf/Bastion.png/revision/latest/scale-to-width-down/250?cb=20211209054642" 
+                             alt="Bruckell Bastion - Modern American Muscle" 
                              class="vehicle-image w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full">MUSCLE</div>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Bruckell Bastion</h3>
-                    <p class="text-gray-400 mb-4 text-sm leading-relaxed">
-                        Modern American muscle car with aggressive styling and brutal V8 power. Features independent rear suspension, modern safety systems, and a throaty exhaust note that echoes through the streets.
-                    </p>
-                    <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Engine</span>
-                            <p class="text-white font-semibold">6.2L V8</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Power</span>
-                            <p class="text-white font-semibold">485 HP</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Weight</span>
-                            <p class="text-white font-semibold">1,850 kg</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Layout</span>
-                            <p class="text-white font-semibold">Front V8 RWD</p>
+                        <div class="vehicle-badge" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.9), rgba(147, 51, 234, 0.8));">Muscle</div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                            <div class="flex items-center space-x-2 text-xs text-gray-300">
+                                <i class="fas fa-fire"></i>
+                                <span>485 HP V8</span>
+                                <span class="mx-2">|</span>
+                                <i class="fas fa-road"></i>
+                                <span>RWD</span>
+                            </div>
                         </div>
                     </div>
-                    <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
-                        <span>View Details</span>
-                        <i class="fas fa-external-link-alt group-hover:translate-x-1 transition-transform"></i>
-                    </button>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white mb-2">Bruckell Bastion</h3>
+                        <p class="text-gray-400 mb-4 text-sm leading-relaxed">
+                            Modern American muscle car combining retro styling cues with contemporary performance. Features an independent rear suspension, Brembo brakes, and a throaty 6.2L pushrod V8. The Bastion delivers brutal acceleration with surprising cornering capability for its size. Police interceptor variant available.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Engine</span>
+                                <p class="text-white font-semibold">6.2L V8 OHV</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Power</span>
+                                <p class="text-white font-semibold">485 HP / 640 Nm</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Weight</span>
+                                <p class="text-white font-semibold">1,850 kg</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Feature</span>
+                                <p class="text-white font-semibold">Limited Slip Diff</p>
+                            </div>
+                        </div>
+                        <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
+                            <span>View Configurations</span>
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Gavril Grand Marshal -->
-                <div class="vehicle-card rounded-2xl p-6 reveal" data-category="sedan">
-                    <div class="relative overflow-hidden rounded-xl mb-4 h-64 bg-gray-800">
-                        <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=800&q=80" 
-                             alt="Gavril Grand Marshal" 
+                <div class="vehicle-card rounded-2xl overflow-hidden reveal" data-category="classic">
+                    <div class="relative h-64 bg-gray-800 overflow-hidden">
+                        <img src="https://static.wikia.nocookie.net/steamtradingcards/images/f/f0/BeamNG.drive_Card_14.png/revision/latest?cb=20210731170044" 
+                             alt="Gavril Grand Marshal - American Full-Size Sedan" 
                              class="vehicle-image w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-gray-600 text-white text-xs font-bold px-3 py-1 rounded-full">FULL-SIZE</div>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Gavril Grand Marshal</h3>
-                    <p class="text-gray-400 mb-4 text-sm leading-relaxed">
-                        Classic American full-size sedan with body-on-frame construction. Popular among law enforcement and taxi services. Durable, spacious, and capable of withstanding severe punishment thanks to its robust chassis.
-                    </p>
-                    <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Engine</span>
-                            <p class="text-white font-semibold">4.6L V8</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Drivetrain</span>
-                            <p class="text-white font-semibold">RWD / AWD</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Weight</span>
-                            <p class="text-white font-semibold">1,750 kg</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Variants</span>
-                            <p class="text-white font-semibold">Police/Taxi</p>
+                        <div class="vehicle-badge" style="background: linear-gradient(135deg, rgba(100, 116, 139, 0.9), rgba(71, 85, 105, 0.8));">Full-Size</div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                            <div class="flex items-center space-x-2 text-xs text-gray-300">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Police/Taxi</span>
+                                <span class="mx-2"></span>
+                                <i class="fas fa-star"></i>
+                                <span>Body-on-Frame</span>
+                            </div>
                         </div>
                     </div>
-                    <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
-                        <span>View Details</span>
-                        <i class="fas fa-external-link-alt group-hover:translate-x-1 transition-transform"></i>
-                    </button>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white mb-2">Gavril Grand Marshal</h3>
+                        <p class="text-gray-400 mb-4 text-sm leading-relaxed">
+                            Classic American full-size sedan built on a robust body-on-frame chassis. Popular with law enforcement and taxi companies for its durability and spacious interior. The 4.6L modular V8 provides reliable if unexciting performance. Exceptionally capable of surviving severe abuse and rough terrain.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Engine</span>
+                                <p class="text-white font-semibold">4.6L V8 SOHC</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Drivetrain</span>
+                                <p class="text-white font-semibold">RWD / AWD</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Weight</span>
+                                <p class="text-white font-semibold">1,750 kg</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Variants</span>
+                                <p class="text-white font-semibold">Police/Taxi/Panther</p>
+                            </div>
+                        </div>
+                        <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
+                            <span>View Configurations</span>
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- ETK 800-Series -->
-                <div class="vehicle-card rounded-2xl p-6 reveal" data-category="sedan">
-                    <div class="relative overflow-hidden rounded-xl mb-4 h-64 bg-gray-800">
-                        <img src="https://images.unsplash.com/photo-1555215695-3004980adade?auto=format&fit=crop&w=800&q=80" 
-                             alt="ETK 800-Series" 
+                <div class="vehicle-card rounded-2xl overflow-hidden reveal" data-category="sedan">
+                    <div class="relative h-64 bg-gray-800 overflow-hidden">
+                        <img src="https://beamngdrivemods.com/wp-content/uploads/2017/05/etk-800-series-sedan-681x387.jpg" 
+                             alt="ETK 800-Series - German Luxury Sedan" 
                              class="vehicle-image w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-teal-500 text-white text-xs font-bold px-3 py-1 rounded-full">LUXURY</div>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">ETK 800-Series</h3>
-                    <p class="text-gray-400 mb-4 text-sm leading-relaxed">
-                        German luxury sedan with cutting-edge technology. Features aluminum space frame construction, advanced air suspension, and powerful turbocharged engines. The epitome of executive comfort and performance.
-                    </p>
-                    <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Engine</span>
-                            <p class="text-white font-semibold">3.0L I6 / 4.4L V8</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Power</span>
-                            <p class="text-white font-semibold">340-600 HP</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Weight</span>
-                            <p class="text-white font-semibold">1,950 kg</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Tech</span>
-                            <p class="text-white font-semibold">Air Suspension</p>
+                        <div class="vehicle-badge" style="background: linear-gradient(135deg, rgba(20, 184, 166, 0.9), rgba(13, 148, 136, 0.8));">Luxury</div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                            <div class="flex items-center space-x-2 text-xs text-gray-300">
+                                <i class="fas fa-gem"></i>
+                                <span>Executive</span>
+                                <span class="mx-2">|</span>
+                                <i class="fas fa-wind"></i>
+                                <span>Air Suspension</span>
+                            </div>
                         </div>
                     </div>
-                    <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
-                        <span>View Details</span>
-                        <i class="fas fa-external-link-alt group-hover:translate-x-1 transition-transform"></i>
-                    </button>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white mb-2">ETK 800-Series</h3>
+                        <p class="text-gray-400 mb-4 text-sm leading-relaxed">
+                            German executive luxury sedan with aluminum-intensive construction. Features adaptive air suspension, advanced driver aids, and a range of powerful turbocharged engines from inline-6 to V8 configurations. The interior offers premium materials and cutting-edge infotainment for the discerning driver.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Engine</span>
+                                <p class="text-white font-semibold">3.0L I6 / 4.4L V8</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Power</span>
+                                <p class="text-white font-semibold">340 - 600 HP</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Weight</span>
+                                <p class="text-white font-semibold">1,950 kg</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Construction</span>
+                                <p class="text-white font-semibold">Aluminum Space Frame</p>
+                            </div>
+                        </div>
+                        <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
+                            <span>View Configurations</span>
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Ibishu Hopper -->
-                <div class="vehicle-card rounded-2xl p-6 reveal" data-category="truck">
-                    <div class="relative overflow-hidden rounded-xl mb-4 h-64 bg-gray-800">
-                        <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80" 
-                             alt="Ibishu Hopper" 
+                <div class="vehicle-card rounded-2xl overflow-hidden reveal" data-category="truck">
+                    <div class="relative h-64 bg-gray-800 overflow-hidden">
+                        <img src="https://static.wikia.nocookie.net/beamng/images/4/42/Ibishu_hopper_custom.jpeg/revision/latest?cb=20250308144347" 
+                             alt="Ibishu Hopper - Japanese Off-Road SUV" 
                              class="vehicle-image w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">OFF-ROAD</div>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Ibishu Hopper</h3>
-                    <p class="text-gray-400 mb-4 text-sm leading-relaxed">
-                        Compact Japanese off-road SUV with solid axles and a ladder frame. Removable roof panels, four-wheel drive with low range, and exceptional articulation make it perfect for rock crawling and trail riding.
-                    </p>
-                    <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Engine</span>
-                            <p class="text-white font-semibold">2.4L I4</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Drivetrain</span>
-                            <p class="text-white font-semibold">4WD</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Weight</span>
-                            <p class="text-white font-semibold">1,450 kg</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Feature</span>
-                            <p class="text-white font-semibold">Solid Axles</p>
+                        <div class="vehicle-badge" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(22, 163, 74, 0.8));">Off-Road</div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                            <div class="flex items-center space-x-2 text-xs text-gray-300">
+                                <i class="fas fa-mountain"></i>
+                                <span>4WD Lo/Hi</span>
+                                <span class="mx-2">|</span>
+                                <i class="fas fa-sun"></i>
+                                <span>Removable Top</span>
+                            </div>
                         </div>
                     </div>
-                    <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
-                        <span>View Details</span>
-                        <i class="fas fa-external-link-alt group-hover:translate-x-1 transition-transform"></i>
-                    </button>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white mb-2">Ibishu Hopper</h3>
+                        <p class="text-gray-400 mb-4 text-sm leading-relaxed">
+                            A compact Japanese off-road legend with solid axles front and rear mounted on a ladder frame chassis. Removable roof panels and doors allow for open-air driving. Exceptional articulation and low-range gearing make it unbeatable on rocks and trails, while remaining practical for daily driving.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Engine</span>
+                                <p class="text-white font-semibold">2.4L I4 SOHC</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Drivetrain</span>
+                                <p class="text-white font-semibold">Part-Time 4WD</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Weight</span>
+                                <p class="text-white font-semibold">1,450 kg</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Suspension</span>
+                                <p class="text-white font-semibold">Solid Axles / Coils</p>
+                            </div>
+                        </div>
+                        <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
+                            <span>View Configurations</span>
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Bruckell LeGran -->
-                <div class="vehicle-card rounded-2xl p-6 reveal" data-category="classic">
-                    <div class="relative overflow-hidden rounded-xl mb-4 h-64 bg-gray-800">
-                        <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80" 
-                             alt="Bruckell LeGran" 
+                <div class="vehicle-card rounded-2xl overflow-hidden reveal" data-category="classic">
+                    <div class="relative h-64 bg-gray-800 overflow-hidden">
+                        <img src="https://www.beamng.com/attachments/upload_2020-4-19_20-39-16-png.660710/" 
+                             alt="Bruckell LeGran - Mid-Size American Wagon" 
                              class="vehicle-image w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-yellow-600 text-white text-xs font-bold px-3 py-1 rounded-full">WAGON</div>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Bruckell LeGran</h3>
-                    <p class="text-gray-400 mb-4 text-sm leading-relaxed">
-                        Mid-80s American mid-size offering available as sedan or wagon. Front-wheel drive with transverse V6 engine. Despite modest performance, it features innovative composite body panels and comfortable seating for six.
-                    </p>
-                    <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Engine</span>
-                            <p class="text-white font-semibold">2.8L V6</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Drivetrain</span>
-                            <p class="text-white font-semibold">FWD</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Weight</span>
-                            <p class="text-white font-semibold">1,420 kg</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Body</span>
-                            <p class="text-white font-semibold">Composite</p>
+                        <div class="vehicle-badge" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.9), rgba(202, 138, 4, 0.8));">Wagon</div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                            <div class="flex items-center space-x-2 text-xs text-gray-300">
+                                <i class="fas fa-suitcase"></i>
+                                <span>Family Hauler</span>
+                                <span class="mx-2">|</span>
+                                <i class="fas fa-gas-pump"></i>
+                                <span>V6 FWD</span>
+                            </div>
                         </div>
                     </div>
-                    <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
-                        <span>View Details</span>
-                        <i class="fas fa-external-link-alt group-hover:translate-x-1 transition-transform"></i>
-                    </button>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white mb-2">Bruckell LeGran</h3>
+                        <p class="text-gray-400 mb-4 text-sm leading-relaxed">
+                            A mid-1980s American mid-size platform available as sedan or practical wagon. Transverse V6 engine with front-wheel drive represented a shift from traditional RWD. Innovative composite body panels resisted rust while the plush interior offered seating for six with velour upholstery.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Engine</span>
+                                <p class="text-white font-semibold">2.8L V6 OHV</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Drivetrain</span>
+                                <p class="text-white font-semibold">FWD</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Weight</span>
+                                <p class="text-white font-semibold">1,420 kg</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Body</span>
+                                <p class="text-white font-semibold">Composite Panels</p>
+                            </div>
+                        </div>
+                        <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
+                            <span>View Configurations</span>
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Civetta Scintilla -->
-                <div class="vehicle-card rounded-2xl p-6 reveal" data-category="sport">
-                    <div class="relative overflow-hidden rounded-xl mb-4 h-64 bg-gray-800">
-                        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80" 
-                             alt="Civetta Scintilla" 
+                <div class="vehicle-card rounded-2xl overflow-hidden reveal" data-category="sport">
+                    <div class="relative h-64 bg-gray-800 overflow-hidden">
+                        <img src="https://cdn.ccdiscussion.com/original/3X/c/c/cc96558f7351e2484ae91e525eaea25ef26797f2.jpeg" 
+                             alt="Civetta Scintilla - Modern Italian Supercar" 
                              class="vehicle-image w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">SPORTS</div>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Civetta Scintilla</h3>
-                    <p class="text-gray-400 mb-4 text-sm leading-relaxed">
-                        Modern Italian supercar with carbon tub construction, active aerodynamics, and a high-revving naturally aspirated V10. All-wheel drive system provides incredible grip while the active suspension adjusts to road conditions instantly.
-                    </p>
-                    <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Engine</span>
-                            <p class="text-white font-semibold">5.2L V10</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Power</span>
-                            <p class="text-white font-semibold">640 HP</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Weight</span>
-                            <p class="text-white font-semibold">1,450 kg</p>
-                        </div>
-                        <div class="spec-item p-2 rounded">
-                            <span class="text-gray-500">Tech</span>
-                            <p class="text-white font-semibold">Carbon Tub</p>
+                        <div class="vehicle-badge" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.8));">Hypercar</div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                            <div class="flex items-center space-x-2 text-xs text-gray-300">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>340 km/h</span>
+                                <span class="mx-2">|</span>
+                                <i class="fas fa-bolt"></i>
+                                <span>V10 Hybrid</span>
+                            </div>
                         </div>
                     </div>
-                    <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
-                        <span>View Details</span>
-                        <i class="fas fa-external-link-alt group-hover:translate-x-1 transition-transform"></i>
-                    </button>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white mb-2">Civetta Scintilla</h3>
+                        <p class="text-gray-400 mb-4 text-sm leading-relaxed">
+                            State-of-the-art Italian hypercar featuring carbon fiber monocoque construction and active aerodynamics. The high-revving naturally aspirated V10 produces 640 horsepower, while the advanced AWD system provides incredible traction. Active suspension constantly adjusts damping for perfect handling balance.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Engine</span>
+                                <p class="text-white font-semibold">5.2L V10 DOHC</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Power</span>
+                                <p class="text-white font-semibold">640 HP @ 8,500 RPM</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Weight</span>
+                                <p class="text-white font-semibold">1,450 kg (Carbon)</p>
+                            </div>
+                            <div class="spec-item p-2 rounded bg-gray-800/50">
+                                <span class="text-gray-500 block text-xs mb-1">Technology</span>
+                                <p class="text-white font-semibold">Active Aero & Suspension</p>
+                            </div>
+                        </div>
+                        <button class="w-full py-3 bg-gray-800 hover:bg-orange-600 text-white rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 group">
+                            <span>View Configurations</span>
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
                 </div>
 
             </div>
 
-            <div class="mt-12 text-center">
+            <div class="mt-12 text-center reveal">
                 <button class="bg-transparent border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white font-bold py-3 px-8 rounded-full transition-all transform hover:scale-105">
-                    Load More Vehicles
+                    View Complete Vehicle Roster
                 </button>
+                <p class="text-gray-500 text-sm mt-4">Includes SBR4, Sunburst, 200BX, K-Series, and 30+ more vehicles</p>
             </div>
         </div>
     </section>
 
     <!-- Physics Engine Section -->
-    <section id="physics" class="py-24 bg-black relative overflow-hidden">
+    <section id="physics" class="py-24 bg-gray-900 relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-b from-orange-900/10 to-transparent"></div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div class="reveal">
+                    <div class="inline-block px-4 py-1 bg-orange-500/10 border border-orange-500/30 rounded-full text-orange-400 text-sm font-semibold mb-4">
+                        Proprietary Technology
+                    </div>
                     <h2 class="text-4xl md:text-6xl font-black text-white mb-6">
-                        Soft-Body <span class="text-orange-500">Physics</span>
+                        Soft-Body <span class="gradient-text">Physics</span>
                     </h2>
                     <p class="text-xl text-gray-400 mb-8 leading-relaxed">
-                        Unlike traditional racing games, BeamNG.drive uses real-time soft-body physics. Every vehicle component is simulated individually, creating the most realistic damage and deformation ever seen in a driving simulator.
+                        Unlike traditional racing games using rigid bodies, BeamNG.drive utilizes a custom-built soft-body physics engine. Every vehicle is simulated as a network of interconnected nodes and beams, calculating forces in real-time at 2000Hz.
                     </p>
                     
-                    <div class="space-y-4">
-                        <div class="physics-card p-6 rounded-xl flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div class="grid gap-4">
+                        <div class="physics-card p-6 rounded-xl flex items-start space-x-4 group cursor-pointer">
+                            <div class="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/30 transition-colors">
                                 <i class="fas fa-network-wired text-orange-500 text-xl"></i>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold text-white mb-2">Nodes & Beams</h3>
-                                <p class="text-gray-400 text-sm">Vehicles are constructed from interconnected nodes (mass points) and beams (spring-damper connections), creating a physics skeleton that deforms realistically under stress.</p>
+                                <h3 class="text-xl font-bold text-white mb-2">Nodes & Beams Structure</h3>
+                                <p class="text-gray-400 text-sm">Vehicles are constructed from mass points (nodes) connected by spring-damper pairs (beams). This skeleton deforms realistically under impact, accurately transferring forces throughout the chassis.</p>
                             </div>
                         </div>
 
-                        <div class="physics-card p-6 rounded-xl flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div class="physics-card p-6 rounded-xl flex items-start space-x-4 group cursor-pointer">
+                            <div class="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/30 transition-colors">
                                 <i class="fas fa-car-crash text-orange-500 text-xl"></i>
                             </div>
                             <div>
                                 <h3 class="text-xl font-bold text-white mb-2">Real-Time Deformation</h3>
-                                <p class="text-gray-400 text-sm">Body panels crumple, glass shatters, and suspension components break under impact. No pre-canned animations—everything is calculated in real-time.</p>
+                                <p class="text-gray-400 text-sm">Body panels crumple based on material thickness and yield strength. Glass shatters using Voronoi fracture patterns. Suspension components bend and break when overstressed. No two crashes are identical.</p>
                             </div>
                         </div>
 
-                        <div class="physics-card p-6 rounded-xl flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div class="physics-card p-6 rounded-xl flex items-start space-x-4 group cursor-pointer">
+                            <div class="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/30 transition-colors">
                                 <i class="fas fa-cogs text-orange-500 text-xl"></i>
                             </div>
                             <div>
                                 <h3 class="text-xl font-bold text-white mb-2">Powertrain Simulation</h3>
-                                <p class="text-gray-400 text-sm">Engines, transmissions, and differentials are fully simulated with realistic friction, inertia, and thermal properties. Clutch slip, gear wear, and engine damage all affect performance.</p>
+                                <p class="text-gray-400 text-sm">Engines feature realistic friction, pumping losses, and thermal dynamics. Transmissions model gear lash, synchromesh wear, and clutch slip. Differentials accurately distribute torque based on traction.</p>
                             </div>
                         </div>
 
-                        <div class="physics-card p-6 rounded-xl flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div class="physics-card p-6 rounded-xl flex items-start space-x-4 group cursor-pointer">
+                            <div class="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/30 transition-colors">
                                 <i class="fas fa-road text-orange-500 text-xl"></i>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold text-white mb-2">Tire Model</h3>
-                                <p class="text-gray-400 text-sm">Advanced tire physics simulate slip angle, load sensitivity, temperature buildup, and wear patterns. Different compounds behave realistically on various surfaces.</p>
+                                <h3 class="text-xl font-bold text-white mb-2">Advanced Tire Model</h3>
+                                <p class="text-gray-400 text-sm">Pacejka-based tire model simulates slip angle, load sensitivity, camber thrust, and temperature buildup. Different compounds offer trade-offs between grip and longevity on various surfaces.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="relative reveal delay-200">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="space-y-4 mt-8">
-                            <div class="bg-gray-800 rounded-2xl p-4 border border-gray-700">
-                                <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=400&q=80" 
-                                     alt="Crash Physics" 
-                                     class="w-full h-48 object-cover rounded-xl mb-3">
-                                <p class="text-sm text-gray-400">Real-time crash deformation</p>
-                            </div>
-                            <div class="bg-gray-800 rounded-2xl p-4 border border-gray-700">
-                                <div class="h-32 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-xl flex items-center justify-center border border-orange-500/30">
-                                    <div class="text-center">
-                                        <div class="text-3xl font-bold text-orange-500">1000+</div>
-                                        <div class="text-xs text-gray-400">Physics Nodes</div>
-                                    </div>
-                                </div>
+                    <div class="bg-gray-800 rounded-2xl p-4 border border-gray-700 shadow-2xl">
+                        <div class="aspect-video bg-gray-900 rounded-xl overflow-hidden relative mb-4">
+                            <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/284160/ss_7a175a33c7e3cd6b31b3b5eb753c92a5c058f800.1920x1080.jpg" 
+                                 alt="BeamNG Physics Simulation" 
+                                 class="w-full h-full object-cover opacity-90">
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-4 left-4">
+                                <div class="text-orange-400 font-bold text-lg">1000+ Physics Nodes</div>
+                                <div class="text-gray-400 text-sm">Per Vehicle</div>
                             </div>
                         </div>
-                        <div class="space-y-4">
-                            <div class="bg-gray-800 rounded-2xl p-4 border border-gray-700">
-                                <div class="h-32 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl flex items-center justify-center border border-blue-500/30">
-                                    <div class="text-center">
-                                        <div class="text-3xl font-bold text-blue-500">2000</div>
-                                        <div class="text-xs text-gray-400">Hz Physics Tick</div>
-                                    </div>
+                        
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div class="bg-gray-900 p-3 rounded-lg border border-gray-700">
+                                <div class="text-2xl font-bold text-orange-500 mb-1">2000Hz</div>
+                                <div class="text-xs text-gray-500">Physics Tick Rate</div>
+                            </div>
+                            <div class="bg-gray-900 p-3 rounded-lg border border-gray-700">
+                                <div class="text-2xl font-bold text-orange-500 mb-1">4000+</div>
+                                <div class="text-xs text-gray-500">Beams Calculated</div>
+                            </div>
+                            <div class="bg-gray-900 p-3 rounded-lg border border-gray-700">
+                                <div class="text-2xl font-bold text-orange-500 mb-1">16ms</div>
+                                <div class="text-xs text-gray-500">Calculation Time</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                        <h4 class="text-white font-bold mb-4 flex items-center">
+                            <i class="fas fa-clipboard-list text-orange-500 mr-2"></i>
+                            Material Properties
+                        </h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400 text-sm">Steel Body Panels</span>
+                                <div class="w-32 h-2 bg-gray-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gray-500 w-3/4"></div>
                                 </div>
                             </div>
-                            <div class="bg-gray-800 rounded-2xl p-4 border border-gray-700">
-                                <img src="https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=400&q=80" 
-                                     alt="Suspension" 
-                                     class="w-full h-48 object-cover rounded-xl mb-3">
-                                <p class="text-sm text-gray-400">Accurate suspension dynamics</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400 text-sm">Carbon Fiber</span>
+                                <div class="w-32 h-2 bg-gray-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gray-800 w-1/2 border border-gray-600"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400 text-sm">Aluminum</span>
+                                <div class="w-32 h-2 bg-gray-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gray-400 w-2/3"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400 text-sm">HSS Chassis</span>
+                                <div class="w-32 h-2 bg-gray-700 rounded-full">
+                                    <div class="h-full bg-orange-600 w-full"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1017,173 +1263,174 @@
     </section>
 
     <!-- Mods Section -->
-    <section id="mods" class="py-24 bg-gray-900">
+    <section id="mods" class="py-24 bg-black">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
                 <h2 class="text-4xl md:text-6xl font-black text-white mb-4">
-                    Endless <span class="text-orange-500">Content</span>
+                    Endless <span class="gradient-text">Content</span>
                 </h2>
                 <p class="text-gray-400 max-w-2xl mx-auto text-lg">
-                    Active modding community creates thousands of new vehicles, maps, and scenarios. Download from the in-game repository or ModDB.
+                    Active modding community creates thousands of new vehicles, maps, and scenarios. Download from the official in-game repository or trusted mod sites.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="mod-card rounded-xl p-6 reveal">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="mod-card rounded-xl p-6 reveal hover:border-blue-500/50 transition-all">
                     <div class="w-14 h-14 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-car text-blue-500 text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">Vehicles</h3>
-                    <p class="text-gray-400 text-sm mb-4">From classic American muscle to modern hypercars, community-made vehicles expand the garage infinitely.</p>
+                    <p class="text-gray-400 text-sm mb-4">From classic American muscle to modern hypercars and trucks. Community vehicles match official quality with detailed interiors and functional gauges.</p>
                     <span class="text-orange-400 text-sm font-semibold">15,000+ Available</span>
                 </div>
 
-                <div class="mod-card rounded-xl p-6 reveal delay-100">
+                <div class="mod-card rounded-xl p-6 reveal delay-100 hover:border-green-500/50 transition-all">
                     <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-map text-green-500 text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">Maps</h3>
-                    <p class="text-gray-400 text-sm mb-4">Race on Nürburgring replicas, city circuits, off-road trails, or entirely fictional landscapes.</p>
+                    <p class="text-gray-400 text-sm mb-4">Race on Nürburgring replicas, Japanese mountain passes, desert highways, or entirely fictional landscapes with dynamic weather.</p>
                     <span class="text-orange-400 text-sm font-semibold">8,000+ Terrains</span>
                 </div>
 
-                <div class="mod-card rounded-xl p-6 reveal delay-200">
+                <div class="mod-card rounded-xl p-6 reveal delay-200 hover:border-purple-500/50 transition-all">
                     <div class="w-14 h-14 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-wrench text-purple-500 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Parts</h3>
-                    <p class="text-gray-400 text-sm mb-4">Engine swaps, body kits, suspension lifts, and custom tuning parts for existing vehicles.</p>
+                    <h3 class="text-xl font-bold text-white mb-2">Parts & Tuning</h3>
+                    <p class="text-gray-400 text-sm mb-4">Engine swaps, widebody kits, suspension lifts, stretch tires, and custom tuning parts that work with existing vehicles.</p>
                     <span class="text-orange-400 text-sm font-semibold">50,000+ Configs</span>
                 </div>
 
-                <div class="mod-card rounded-xl p-6 reveal delay-300">
+                <div class="mod-card rounded-xl p-6 reveal delay-300 hover:border-pink-500/50 transition-all">
                     <div class="w-14 h-14 bg-pink-500/20 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-gamepad text-pink-500 text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">Scenarios</h3>
-                    <p class="text-gray-400 text-sm mb-4">Police chases, delivery missions, rally courses, and elaborate crash testing challenges.</p>
+                    <p class="text-gray-400 text-sm mb-4">Police chases, delivery missions, rally courses, drift competitions, and elaborate crash testing challenges.</p>
                     <span class="text-orange-400 text-sm font-semibold">3,000+ Missions</span>
                 </div>
             </div>
 
-            <div class="mt-16 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700 reveal">
-                <div class="flex flex-col md:flex-row items-center justify-between">
-                    <div class="mb-6 md:mb-0">
+            <div class="bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700 reveal">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div>
                         <h3 class="text-2xl font-bold text-white mb-2">Ready to Mod?</h3>
-                        <p class="text-gray-400">Install the BeamNG Mod Manager or browse the in-game repository.</p>
+                        <p class="text-gray-400">Access thousands of mods directly through the in-game repository or visit ModLand for external downloads.</p>
                     </div>
-                    <div class="flex space-x-4">
-                        <button class="px-6 py-3 bg-orange-600 hover:bg-orange-500 text-white rounded-lg font-semibold transition-colors">
-                            Browse Repository
-                        </button>
-                        <button class="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg font-semibold transition-colors">
-                            Modding Wiki
-                        </button>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="https://beamng.com/resources/" target="_blank" 
+                           class="px-6 py-3 bg-orange-600 hover:bg-orange-500 text-white rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2">
+                            <i class="fas fa-archive"></i>
+                            <span>Browse Repository</span>
+                        </a>
+                        <a href="https://www.modland.net/beamng.drive-mods" target="_blank"
+                           class="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2">
+                            <i class="fas fa-book"></i>
+                            <span>ModLand</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Community Stats -->
-    <section id="community" class="py-24 bg-black relative overflow-hidden">
+    <!-- Community Section -->
+    <section class="py-24 bg-gray-900 relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-r from-orange-600/10 to-blue-600/10"></div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="reveal">
-                    <h2 class="text-4xl font-black text-white mb-6">
-                        Join the <span class="text-orange-500">Community</span>
-                    </h2>
-                    <div class="space-y-6">
-                        <p class="text-gray-400 text-lg leading-relaxed">
-                            Connect with millions of players worldwide. Share screenshots, discuss vehicle builds, participate in events, and get help from experienced modders.
-                        </p>
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl font-black text-white mb-4">
+                    Join the <span class="gradient-text">Community</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Connect with millions of players worldwide. Share screenshots, discuss builds, and get help from experienced modders.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 reveal">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <a href="https://www.beamng.com" target="_blank" 
+                           class="flex flex-col items-center p-6 bg-gray-800 rounded-xl border border-gray-700 hover:border-orange-500 transition-all hover:transform hover:-translate-y-1">
+                            <i class="fas fa-globe text-3xl text-orange-500 mb-3"></i>
+                            <span class="font-bold text-white">Official Forums</span>
+                            <span class="text-xs text-gray-500 mt-1">1M+ Posts</span>
+                        </a>
                         
-                        <div class="grid grid-cols-2 gap-4">
-                            <a href="https://www.beamng.com" target="_blank" class="flex items-center space-x-3 p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-orange-500 transition-colors group">
-                                <i class="fas fa-globe text-2xl text-gray-400 group-hover:text-orange-500"></i>
-                                <div>
-                                    <div class="font-bold text-white">Official Forums</div>
-                                    <div class="text-xs text-gray-500">1M+ Posts</div>
-                                </div>
-                            </a>
-                            
-                            <a href="#" class="flex items-center space-x-3 p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-orange-500 transition-colors group">
-                                <i class="fab fa-discord text-2xl text-gray-400 group-hover:text-orange-500"></i>
-                                <div>
-                                    <div class="font-bold text-white">Discord Server</div>
-                                    <div class="text-xs text-gray-500">150k+ Members</div>
-                                </div>
-                            </a>
-                            
-                            <a href="#" class="flex items-center space-x-3 p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-orange-500 transition-colors group">
-                                <i class="fab fa-reddit text-2xl text-gray-400 group-hover:text-orange-500"></i>
-                                <div>
-                                    <div class="font-bold text-white">Reddit</div>
-                                    <div class="text-xs text-gray-500">r/BeamNG</div>
-                                </div>
-                            </a>
-                            
-                            <a href="#" class="flex items-center space-x-3 p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-orange-500 transition-colors group">
-                                <i class="fab fa-youtube text-2xl text-gray-400 group-hover:text-orange-500"></i>
-                                <div>
-                                    <div class="font-bold text-white">YouTube</div>
-                                    <div class="text-xs text-gray-500">Tutorials & Gameplay</div>
-                                </div>
-                            </a>
+                        <a href="#" class="flex flex-col items-center p-6 bg-gray-800 rounded-xl border border-gray-700 hover:border-orange-500 transition-all hover:transform hover:-translate-y-1">
+                            <i class="fab fa-discord text-3xl text-indigo-500 mb-3"></i>
+                            <span class="font-bold text-white">Discord</span>
+                            <span class="text-xs text-gray-500 mt-1">150k+ Members</span>
+                        </a>
+                        
+                        <a href="#" class="flex flex-col items-center p-6 bg-gray-800 rounded-xl border border-gray-700 hover:border-orange-500 transition-all hover:transform hover:-translate-y-1">
+                            <i class="fab fa-reddit text-3xl text-red-500 mb-3"></i>
+                            <span class="font-bold text-white">Reddit</span>
+                            <span class="text-xs text-gray-500 mt-1">r/BeamNG</span>
+                        </a>
+                        
+                        <a href="#" class="flex flex-col items-center p-6 bg-gray-800 rounded-xl border border-gray-700 hover:border-orange-500 transition-all hover:transform hover:-translate-y-1">
+                            <i class="fab fa-youtube text-3xl text-red-600 mb-3"></i>
+                            <span class="font-bold text-white">YouTube</span>
+                            <span class="text-xs text-gray-500 mt-1">Tutorials</span>
+                        </a>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                        <h3 class="text-xl font-bold text-white mb-4">Player Statistics</h3>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div class="p-4 bg-gray-900 rounded-lg">
+                                <div class="text-3xl font-bold text-orange-500 mb-1">4.2M+</div>
+                                <div class="text-xs text-gray-500">Total Owners</div>
+                            </div>
+                            <div class="p-4 bg-gray-900 rounded-lg">
+                                <div class="text-3xl font-bold text-orange-500 mb-1">12k+</div>
+                                <div class="text-xs text-gray-500">Concurrent Players</div>
+                            </div>
+                            <div class="p-4 bg-gray-900 rounded-lg">
+                                <div class="text-3xl font-bold text-orange-500 mb-1">13 Years</div>
+                                <div class="text-xs text-gray-500">In Development</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="reveal delay-200">
-                    <div class="bg-gray-900 rounded-2xl p-8 border border-gray-800">
-                        <h3 class="text-2xl font-bold text-white mb-6">Player Statistics</h3>
-                        <div class="space-y-6">
-                            <div>
-                                <div class="flex justify-between mb-2">
-                                    <span class="text-gray-400">Concurrent Players</span>
-                                    <span class="text-orange-500 font-bold">12,450</span>
-                                </div>
-                                <div class="w-full bg-gray-800 rounded-full h-2">
-                                    <div class="bg-orange-500 h-2 rounded-full" style="width: 75%"></div>
-                                </div>
+                    <div class="testimonial-card rounded-2xl p-6 relative">
+                        <i class="fas fa-quote-left text-4xl text-orange-500/20 absolute top-4 right-4"></i>
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white font-bold text-xl">S</div>
+                            <div class="ml-3">
+                                <div class="font-bold text-white">Simulation Weekly</div>
+                                <div class="text-xs text-gray-500">Gaming Magazine</div>
                             </div>
-                            
-                            <div>
-                                <div class="flex justify-between mb-2">
-                                    <span class="text-gray-400">Total Owners</span>
-                                    <span class="text-blue-500 font-bold">4.2M+</span>
-                                </div>
-                                <div class="w-full bg-gray-800 rounded-full h-2">
-                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 90%"></div>
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <div class="flex justify-between mb-2">
-                                    <span class="text-gray-400">Steam Rating</span>
-                                    <span class="text-green-500 font-bold">98% Positive</span>
-                                </div>
-                                <div class="w-full bg-gray-800 rounded-full h-2">
-                                    <div class="bg-green-500 h-2 rounded-full" style="width: 98%"></div>
-                                </div>
-                            </div>
+                        </div>
+                        <p class="text-gray-300 italic mb-4">"The most advanced soft-body physics engine ever created for consumer hardware. A technical marvel that remains unmatched."</p>
+                        <div class="flex text-orange-500">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
 
-                            <div class="pt-6 border-t border-gray-800 grid grid-cols-3 gap-4 text-center">
-                                <div>
-                                    <div class="text-2xl font-bold text-white">8 Years</div>
-                                    <div class="text-xs text-gray-500">Early Access</div>
-                                </div>
-                                <div>
-                                    <div class="text-2xl font-bold text-white">0.31</div>
-                                    <div class="text-xs text-gray-500">Latest Update</div>
-                                </div>
-                                <div>
-                                    <div class="text-2xl font-bold text-white">Weekly</div>
-                                    <div class="text-xs text-gray-500">Hotfixes</div>
-                                </div>
+                    <div class="testimonial-card rounded-2xl p-6 relative mt-4">
+                        <i class="fas fa-quote-left text-4xl text-orange-500/20 absolute top-4 right-4"></i>
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-xl">P</div>
+                            <div class="ml-3">
+                                <div class="font-bold text-white">PC Gamer</div>
+                                <div class="text-xs text-gray-500">Review</div>
                             </div>
+                        </div>
+                        <p class="text-gray-300 italic mb-4">"Incredibly satisfying destruction physics. Every crash is unique and horrifyingly realistic."</p>
+                        <div class="flex text-orange-500">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
                         </div>
                     </div>
                 </div>
@@ -1191,100 +1438,189 @@
         </div>
     </section>
 
-    <!-- System Requirements -->
+    <!-- System Requirements Section -->
     <section id="specs" class="py-24 bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
                 <h2 class="text-4xl md:text-6xl font-black text-white mb-4">
-                    System <span class="text-orange-500">Requirements</span>
+                    System <span class="gradient-text">Requirements</span>
                 </h2>
-                <p class="text-gray-400">Soft-body physics require significant CPU power. Recommended for modern gaming PCs.</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-8 reveal">
-                <div class="bg-gray-800 rounded-2xl p-8 border border-gray-700">
-                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
-                        <i class="fas fa-desktop text-gray-400 mr-3"></i> Minimum
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between py-3 border-b border-gray-700">
-                            <span class="text-gray-400">OS</span>
-                            <span class="text-white font-semibold">Windows 10 64-bit</span>
-                        </div>
-                        <div class="flex justify-between py-3 border-b border-gray-700">
-                            <span class="text-gray-400">Processor</span>
-                            <span class="text-white font-semibold">Intel i5-4690 / AMD Ryzen 5 1500X</span>
-                        </div>
-                        <div class="flex justify-between py-3 border-b border-gray-700">
-                            <span class="text-gray-400">Memory</span>
-                            <span class="text-white font-semibold">8 GB RAM</span>
-                        </div>
-                        <div class="flex justify-between py-3 border-b border-gray-700">
-                            <span class="text-gray-400">Graphics</span>
-                            <span class="text-white font-semibold">GTX 970 / R9 290</span>
-                        </div>
-                        <div class="flex justify-between py-3 border-b border-gray-700">
-                            <span class="text-gray-400">Storage</span>
-                            <span class="text-white font-semibold">45 GB HDD</span>
-                        </div>
-                        <div class="flex justify-between py-3">
-                            <span class="text-gray-400">Physics</span>
-                            <span class="text-white font-semibold">4-core minimum</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-gradient-to-br from-orange-900/20 to-gray-800 rounded-2xl p-8 border border-orange-500/30 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-orange-500 text-white text-xs font-bold px-4 py-1 rounded-bl-lg">RECOMMENDED</div>
-                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
-                        <i class="fas fa-rocket text-orange-500 mr-3"></i> Recommended
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between py-3 border-b border-gray-700">
-                            <span class="text-gray-400">OS</span>
-                            <span class="text-white font-semibold">Windows 11 64-bit</span>
-                        </div>
-                        <div class="flex justify-between py-3 border-b border-gray-700">
-                            <span class="text-gray-400">Processor</span>
-                            <span class="text-white font-semibold">Intel i7-12700K / AMD Ryzen 7 5800X</span>
-                        </div>
-                        <div class="flex justify-between py-3 border-b border-gray-700">
-                            <span class="text-gray-400">Memory</span>
-                            <span class="text-white font-semibold">32 GB RAM</span>
-                        </div>
-                        <div class="flex justify-between py-3 border-b border-gray-700">
-                            <span class="text-gray-400">Graphics</span>
-                            <span class="text-white font-semibold">RTX 3070 / RX 6800 XT</span>
-                        </div>
-                        <div class="flex justify-between py-3 border-b border-gray-700">
-                            <span class="text-gray-400">Storage</span>
-                            <span class="text-white font-semibold">45 GB NVMe SSD</span>
-                        </div>
-                        <div class="flex justify-between py-3">
-                            <span class="text-gray-400">Physics</span>
-                            <span class="text-orange-400 font-semibold">8-core+ for large grids</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-12 bg-orange-500/10 border border-orange-500/20 rounded-xl p-6 reveal">
-                <p class="text-orange-200 text-center">
-                    <i class="fas fa-info-circle mr-2"></i>
-                    <strong>Note:</strong> BeamNG.drive is CPU-intensive due to real-time soft-body physics. More cores provide smoother gameplay with multiple vehicles.
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Soft-body physics require significant CPU power. A modern gaming PC is recommended for the best experience.
                 </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- Minimum Requirements -->
+                <div class="bg-gray-800 rounded-2xl overflow-hidden border border-gray-700 reveal">
+                    <div class="bg-gray-700/50 p-6 border-b border-gray-600">
+                        <h3 class="text-2xl font-bold text-white flex items-center">
+                            <i class="fas fa-desktop text-gray-400 mr-3"></i> Minimum
+                        </h3>
+                        <p class="text-gray-400 text-sm mt-2">Requires a 64-bit processor and operating system</p>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-24 flex-shrink-0">OS</span>
+                            <span class="text-white font-medium">Windows 10 64 Bit</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-24 flex-shrink-0">Processor</span>
+                            <span class="text-white font-medium">AMD Ryzen 5 1600 / Intel Core i5 8400</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-24 flex-shrink-0">Memory</span>
+                            <span class="text-white font-medium">16 GB RAM</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-24 flex-shrink-0">Graphics</span>
+                            <span class="text-white font-medium">Minimum 6GB VRAM<br>AMD Radeon RX 570 / Nvidia GeForce GTX 1060</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-24 flex-shrink-0">DirectX</span>
+                            <span class="text-white font-medium">Version 11</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-24 flex-shrink-0">Storage</span>
+                            <span class="text-white font-medium">60 GB available space</span>
+                        </div>
+                        <div class="mt-6 p-4 bg-gray-900/50 rounded-lg border-l-2 border-gray-500">
+                            <p class="text-gray-400 text-sm">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                <strong>Additional Notes:</strong> Installing game mods will increase required storage space. Gamepad recommended.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommended Requirements -->
+                <div class="bg-gradient-to-br from-orange-900/20 to-gray-800 rounded-2xl overflow-hidden border border-orange-500/30 relative reveal">
+                    <div class="absolute top-0 right-0 bg-orange-500 text-white text-xs font-bold px-4 py-1 rounded-bl-lg">RECOMMENDED</div>
+                    <div class="bg-orange-500/10 p-6 border-b border-orange-500/20">
+                        <h3 class="text-2xl font-bold text-white flex items-center">
+                            <i class="fas fa-rocket text-orange-500 mr-3"></i> Recommended
+                        </h3>
+                        <p class="text-gray-400 text-sm mt-2">Requires a 64-bit processor and operating system</p>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-start">
+                            <span class="text-gray-400 w-24 flex-shrink-0">OS</span>
+                            <span class="text-white font-medium">Windows 10 64 Bit</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-400 w-24 flex-shrink-0">Processor</span>
+                            <span class="text-white font-medium">AMD Ryzen 7 3700X / Intel Core i7 9700</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-400 w-24 flex-shrink-0">Memory</span>
+                            <span class="text-white font-medium">32 GB RAM</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-400 w-24 flex-shrink-0">Graphics</span>
+                            <span class="text-white font-medium">Minimum 8GB VRAM<br>AMD RX 6700 / Nvidia GeForce RTX 3060</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-400 w-24 flex-shrink-0">DirectX</span>
+                            <span class="text-white font-medium">Version 11</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-400 w-24 flex-shrink-0">Storage</span>
+                            <span class="text-white font-medium">60 GB available space</span>
+                        </div>
+                        <div class="mt-4 p-4 bg-gray-900/50 rounded-lg border-l-2 border-orange-500">
+                            <p class="text-gray-300 text-sm mb-2">
+                                <i class="fas fa-info-circle mr-2 text-orange-500"></i>
+                                <strong>Additional Notes:</strong> Recommended spec based on 1080p resolution. Installing game mods will increase required storage space. Gamepad recommended.
+                            </p>
+                            <p class="text-gray-300 text-sm">
+                                <i class="fas fa-vr-cardboard mr-2 text-orange-500"></i>
+                                <strong>VR Support:</strong> 10GB VRAM GPU with Vulkan support and OpenXR
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-orange-500/10 border border-orange-500/20 rounded-xl p-6 reveal">
+                <div class="flex items-start">
+                    <i class="fas fa-exclamation-triangle text-orange-500 text-2xl mr-4 mt-1"></i>
+                    <div>
+                        <h4 class="text-white font-bold mb-2">Important Performance Notice</h4>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            BeamNG.drive is extremely CPU-intensive due to real-time soft-body physics calculations. Performance scales heavily with single-threaded CPU speed and core count. 
+                            For multiplayer servers or large-scale crash scenarios with 8+ vehicles, a high-end modern CPU (Ryzen 7/9 or Intel i7/i9) with 32GB+ RAM is strongly recommended. 
+                            Storage speed affects map loading times significantly; an NVMe SSD is highly recommended.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 bg-black">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl font-black text-white mb-4">
+                    Frequently <span class="gradient-text">Asked</span>
+                </h2>
+                <p class="text-gray-400">Common questions about BeamNG.drive</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden reveal">
+                    <button class="accordion-btn w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-800 transition-colors">
+                        <span class="font-bold text-white">Is BeamNG.drive multiplayer?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-4">
+                        <p class="text-gray-400">Yes! BeamNG.drive features official multiplayer support supporting up to 64 players per server. You can race, roleplay, or create chaotic crash scenarios with friends. Server stability and synchronization have been significantly improved in recent updates.</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden reveal delay-100">
+                    <button class="accordion-btn w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-800 transition-colors">
+                        <span class="font-bold text-white">Can I use a steering wheel?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-4">
+                        <p class="text-gray-400">Absolutely. BeamNG.drive has excellent force feedback support for most major steering wheel brands including Logitech, Thrustmaster, and Fanatec. The game accurately transmits road surface details, tire slip, and collision forces to the wheel.</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden reveal delay-200">
+                    <button class="accordion-btn w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-800 transition-colors">
+                        <span class="font-bold text-white">How do I install mods?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-4">
+                        <p class="text-gray-400">The easiest way is through the in-game Mod Repository (available from the main menu). Alternatively, you can manually place .zip files in your Documents/BeamNG.drive/mods folder. The game supports automatic installation from .dmg files as well.</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden reveal delay-300">
+                    <button class="accordion-btn w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-800 transition-colors">
+                        <span class="font-bold text-white">Is the game still in Early Access?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-4">
+                        <p class="text-gray-400">Yes, BeamNG.drive has been in Early Access since 2013 and receives regular major updates. Version 1.0 is planned but the developers prioritize polishing core systems and adding features over rushing to release. Purchasers receive all future updates free.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Call to Action -->
-    <section class="py-24 bg-gradient-to-t from-black to-gray-900 relative">
+    <section class="py-24 bg-gradient-to-t from-gray-900 to-black relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-transparent"></div>
+        
         <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
             <h2 class="text-5xl md:text-7xl font-black text-white mb-6 reveal">
-                Ready to <span class="text-orange-500">Crash?</span>
+                Ready to <span class="gradient-text">Crash?</span>
             </h2>
             <p class="text-xl text-gray-400 mb-10 reveal">
-                Join millions of players experiencing the most realistic vehicle simulator ever created. Available now on Steam Early Access.
+                Join over 4 million players experiencing the most realistic vehicle simulator ever created. Available now on Steam Early Access with free updates for life.
             </p>
             
             <div class="flex flex-col sm:flex-row justify-center gap-4 reveal">
@@ -1292,19 +1628,20 @@
                    class="steam-btn px-8 py-4 rounded-full text-white font-bold text-lg flex items-center justify-center space-x-3 hover:scale-105 transition-transform">
                     <i class="fab fa-steam text-2xl"></i>
                     <div class="text-left">
-                        <div class="text-xs opacity-80">Buy on</div>
+                        <div class="text-xs opacity-80">Available on</div>
                         <div class="text-xl">Steam</div>
                     </div>
                 </a>
                 
-                <button class="px-8 py-4 rounded-full border-2 border-white/20 text-white font-bold text-lg hover:bg-white hover:text-black transition-all flex items-center justify-center space-x-2">
+                <a href="https://www.youtube.com/watch?v=4ms-LHkN6YQ" target="_blank"
+                   class="px-8 py-4 rounded-full border-2 border-white/20 text-white font-bold text-lg hover:bg-white hover:text-black transition-all flex items-center justify-center space-x-2">
                     <i class="fas fa-play"></i>
-                    <span>Watch Trailer</span>
-                </button>
+                    <span>Official Trailer</span>
+                </a>
             </div>
 
-            <div class="mt-12 flex justify-center space-x-8 text-gray-500 reveal">
-                <i class="fab fa-windows text-3xl hover:text-white transition-colors cursor-pointer" title="Windows Compatible"></i>
+            <div class="mt-12 flex justify-center space-x-8 text-gray-600 reveal">
+                <i class="fab fa-windows text-3xl hover:text-white transition-colors cursor-pointer" title="Windows 10/11 Compatible"></i>
                 <i class="fas fa-vr-cardboard text-3xl hover:text-white transition-colors cursor-pointer" title="VR Support"></i>
                 <i class="fas fa-gamepad text-3xl hover:text-white transition-colors cursor-pointer" title="Full Controller Support"></i>
                 <i class="fas fa-headset text-3xl hover:text-white transition-colors cursor-pointer" title="Haptic Feedback"></i>
@@ -1323,81 +1660,88 @@
                         </div>
                         <span class="brand-font text-xl font-bold text-white">BeamNG</span>
                     </div>
-                    <p class="text-gray-500 text-sm leading-relaxed">
-                        The ultimate physics sandbox vehicle simulator. Every component is real-time simulated for unprecedented realism.
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">
+                        The ultimate soft-body physics vehicle simulator. Every component is real-time simulated for unprecedented realism and destruction.
                     </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-orange-500 transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-orange-500 transition-colors"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-orange-500 transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-orange-500 transition-colors"><i class="fab fa-youtube"></i></a>
+                    </div>
                 </div>
                 
                 <div>
                     <h4 class="text-white font-bold mb-4 uppercase tracking-wider text-sm">Game</h4>
                     <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">Features</a></li>
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">Vehicles</a></li>
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">Scenarios</a></li>
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">Multiplayer</a></li>
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">Updates</a></li>
+                        <li><a href="#vehicles" class="hover:text-orange-500 transition-colors">Vehicles</a></li>
+                        <li><a href="#physics" class="hover:text-orange-500 transition-colors">Physics Engine</a></li>
+                        <li><a href="#features" class="hover:text-orange-500 transition-colors">Features</a></li>
+                        <li><a href="#mods" class="hover:text-orange-500 transition-colors">Modding</a></li>
+                        <li><a href="https://store.steampowered.com/app/284160/BeamNGdrive/" target="_blank" class="hover:text-orange-500 transition-colors">Buy on Steam</a></li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h4 class="text-white font-bold mb-4 uppercase tracking-wider text-sm">Community</h4>
+                    <h4 class="text-white font-bold mb-4 uppercase tracking-wider text-sm">Resources</h4>
                     <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">Mod Repository</a></li>
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">Forums</a></li>
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">Discord</a></li>
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">Wiki</a></li>
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">Tech Support</a></li>
+                        <li><a href="https://beamng.com/resources/" target="_blank" class="hover:text-orange-500 transition-colors">Mod Repository</a></li>
+                        <li><a href="https://www.modland.net/beamng.drive-mods" target="_blank" class="hover:text-orange-500 transition-colors">Modland</a></li>
+                        <li><a href="https://www.beamng.com" target="_blank" class="hover:text-orange-500 transition-colors">Forums</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Documentation</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Support</a></li>
                     </ul>
                 </div>
                 
                 <div>
                     <h4 class="text-white font-bold mb-4 uppercase tracking-wider text-sm">Company</h4>
                     <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">About BeamNG</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">About BeamNG GmbH</a></li>
                         <li><a href="#" class="hover:text-orange-500 transition-colors">Careers</a></li>
                         <li><a href="#" class="hover:text-orange-500 transition-colors">Press Kit</a></li>
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">Contact</a></li>
                         <li><a href="#" class="hover:text-orange-500 transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Terms of Service</a></li>
                     </ul>
                 </div>
             </div>
             
             <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-600 text-sm mb-4 md:mb-0">
-                    © 2024 BeamNG GmbH. All rights reserved. Not affiliated with actual BeamNG.drive.
+                <p class="text-gray-600 text-sm mb-4 md:mb-0 text-center md:text-left">
+                    Copyright 2012-2025 BeamNG GmbH. All rights reserved.<br>
+                    <span class="text-xs">This is a fan-made website for demonstration purposes.</span>
                 </p>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-600 hover:text-white transition-colors"><i class="fab fa-twitter text-xl"></i></a>
-                    <a href="#" class="text-gray-600 hover:text-white transition-colors"><i class="fab fa-facebook text-xl"></i></a>
-                    <a href="#" class="text-gray-600 hover:text-white transition-colors"><i class="fab fa-instagram text-xl"></i></a>
-                    <a href="#" class="text-gray-600 hover:text-white transition-colors"><i class="fab fa-youtube text-xl"></i></a>
+                <div class="flex items-center space-x-4">
+                    <img src="https://cdn.cloudflare.steamstatic.com/store/about/vr/glyph.png" alt="VR Support" class="h-8 opacity-50 hover:opacity-100 transition-opacity" title="VR Ready">
+                    <img src="https://cdn.cloudflare.steamstatic.com/store/about/reviews/glyph.png" alt="Steam Reviews" class="h-8 opacity-50 hover:opacity-100 transition-opacity" title="Steam Community">
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
-        // Loader
+        // Loader removal
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.getElementById('loader').classList.add('hidden');
-            }, 500);
+            }, 800);
         });
 
         // Custom Cursor
         const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
+        if (window.matchMedia("(min-width: 768px)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
 
-        document.addEventListener('mousedown', () => {
-            cursor.style.transform = 'scale(1.5)';
-        });
+            document.addEventListener('mousedown', () => {
+                cursor.style.transform = 'scale(1.5)';
+            });
 
-        document.addEventListener('mouseup', () => {
-            cursor.style.transform = 'scale(1)';
-        });
+            document.addEventListener('mouseup', () => {
+                cursor.style.transform = 'scale(1)';
+            });
+        }
 
         // Navigation Scroll Effect
         const navbar = document.getElementById('navbar');
@@ -1418,7 +1762,6 @@
             mobileMenu.classList.toggle('active');
         });
 
-        // Close mobile menu when clicking links
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 menuBtn.classList.remove('active');
@@ -1426,7 +1769,7 @@
             });
         });
 
-        // Intersection Observer for Animations
+        // Intersection Observer
         const observerOptions = {
             threshold: 0.1,
             rootMargin: "0px 0px -50px 0px"
@@ -1440,9 +1783,7 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.reveal').forEach(el => {
-            observer.observe(el);
-        });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
         // Vehicle Filter
         const filterBtns = document.querySelectorAll('.filter-btn');
@@ -1450,13 +1791,11 @@
 
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                // Remove active class from all buttons
                 filterBtns.forEach(b => {
                     b.classList.remove('bg-orange-500/20', 'text-orange-400', 'border-orange-500');
                     b.classList.add('border-gray-700', 'text-gray-400');
                 });
                 
-                // Add active class to clicked button
                 btn.classList.remove('border-gray-700', 'text-gray-400');
                 btn.classList.add('bg-orange-500/20', 'text-orange-400', 'border-orange-500');
                 
@@ -1480,7 +1819,25 @@
             });
         });
 
-        // Smooth Scroll for Navigation Links
+        // Accordion
+        document.querySelectorAll('.accordion-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('i');
+                
+                content.classList.toggle('active');
+                
+                if (content.classList.contains('active')) {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    content.style.maxHeight = 0;
+                    icon.style.transform = 'rotate(0)';
+                }
+            });
+        });
+
+        // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -1494,47 +1851,7 @@
             });
         });
 
-        // Parallax Effect for Hero
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelector('.hero-bg::before');
-            if (parallax) {
-                parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
-            }
-        });
-
-        // Dynamic Year in Footer
-        document.querySelector('footer p').innerHTML = `© ${new Date().getFullYear()} BeamNG Fan Page. All rights reserved. Fan-made website not affiliated with BeamNG GmbH.`;
-
-        // Add hover sound effect simulation (visual feedback)
-        document.querySelectorAll('button, a').forEach(btn => {
-            btn.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.02)';
-            });
-            btn.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
-            });
-        });
-
-        // Performance Monitor
-        let lastTime = performance.now();
-        let frameCount = 0;
-        
-        function updatePerformance() {
-            const currentTime = performance.now();
-            frameCount++;
-            
-            if (currentTime - lastTime >= 1000) {
-                // Could display FPS here if needed
-                frameCount = 0;
-                lastTime = currentTime;
-            }
-            
-            requestAnimationFrame(updatePerformance);
-        }
-        updatePerformance();
-
-        // Dynamic particle generation
+        // Dynamic Particles
         function createParticle() {
             const particle = document.createElement('div');
             particle.className = 'particle';
@@ -1550,18 +1867,10 @@
 
         setInterval(createParticle, 3000);
 
-        // Keyboard Navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
-                menuBtn.classList.remove('active');
-                mobileMenu.classList.remove('active');
-            }
-        });
-
         // Console Easter Egg
         console.log('%cBeamNG.drive', 'font-size: 40px; font-weight: bold; color: #ff6b35; text-shadow: 2px 2px 0 #000;');
-        console.log('%cFan-made website by a passionate player', 'font-size: 14px; color: #666;');
-        console.log('%cSoft-body physics simulation in your browser? Check the code!', 'font-size: 12px; color: #999;');
+        console.log('%cFan-made tribute site', 'font-size: 14px; color: #666;');
+        console.log('%cSoft-body physics simulation has never looked this good.', 'font-size: 12px; color: #999;');
     </script>
 </body>
 </html>
